@@ -170,7 +170,7 @@
                         lessons: this.cart.map(item => item._id)
                     };
 
-                    fetch('http://localhost:3001/api/orders', {
+                    fetch('https://backend-afterschool.onrender.com/api/orders', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(order)
