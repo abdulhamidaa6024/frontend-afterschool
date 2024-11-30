@@ -117,7 +117,7 @@
             },
             methods: {
                 fetchLessons() {
-                    fetch('http://localhost:3001/api/lessons')
+                    fetch('https://backend-afterschool.onrender.com/api/lessons')
                         .then(response => response.json())
                         .then(data => {
                             this.lessons = data;
@@ -128,7 +128,7 @@
                     if (this.searchQuery.trim() === '') {
                         this.fetchLessons(); // Reload all lessons if search query is cleared
                     } else {
-                        fetch(`http://localhost:3001/api/search?q=${this.searchQuery}`)
+                        fetch(`https://backend-afterschool.onrender.com/api/search?q=${this.searchQuery}`)
                             .then(response => response.json())
                             .then(data => {
                                 this.lessons = data;
@@ -147,7 +147,7 @@
                     if (index > -1) {
                         const lesson = this.lessons.find(l => l._id === item._id);
                         if (lesson) {
-                            fetch(`http://localhost:3001/api/lessons/${item._id}`, {
+                            fetch(`https://backend-afterschool.onrender.com/api/lessons/${item._id}`, {
                                 method: 'PUT',
                                 headers: { 'Content-Type': 'application/json' },
                                 body: JSON.stringify({ spaces: lesson.spaces + 1 })
