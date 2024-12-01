@@ -117,84 +117,84 @@
             },
 
             methods: {
-                fetchLessons() {
-                    fetch('https://backend-afterschool.onrender.com/api/lessons')
-                        .then(response => response.json())
-                        .then(data => {
-                            this.lessons = data;
-                        })
-                        .catch(error => console.error('Error:', error));
-                },
-                searchLessons() {
-                    if (this.searchQuery.trim() === '') {
-                        this.fetchLessons(); // Reload all lessons if search query is cleared
-                    } else {
-                        fetch(`https://backend-afterschool.onrender.com/api/search?q=${this.searchQuery}`)
-                            .then(response => response.json())
-                            .then(data => {
-                                this.lessons = data;
-                            })
-                            .catch(error => console.error('Error searching lessons:', error));
-                    }
-                },
-                addToCart(lesson) {
-                    if (lesson.spaces > 0) {
-                        lesson.spaces--;
-                        this.cart.push({ ...lesson });
-                    }
-                },
-                removeFromCart(item) {
-                    const index = this.cart.indexOf(item);
-                    if (index > -1) {
-                        const lesson = this.lessons.find(l => l._id === item._id);
-                        if (lesson) {
-                            fetch(`https://backend-afterschool.onrender.com/api/lessons/${item._id}`, {
-                                method: 'PUT',
-                                headers: { 'Content-Type': 'application/json' },
-                                body: JSON.stringify({ spaces: lesson.spaces + 1 })
-                            })
-                                .then(() => {
-                                    lesson.spaces++;
-                                    this.cart.splice(index, 1);
-                                    this.fetchLessons();
-                                })
-                                .catch(error => console.error('Error updating spaces:', error));
-                        }
-                    }
-                },
-                toggleCart() {
-                    if (this.cart.length > 0) {
-                        this.showCart = !this.showCart;
-                    }
-                },
-                submitOrder() {
-                    if (!this.isCheckoutValid) return;
-
-                    const order = {
-                        name: this.checkoutForm.name,
-                        phone: this.checkoutForm.phone,
-                        lessons: this.cart.map(item => item._id)
-                    };
-
-                    fetch('https://backend-afterschool.onrender.com/api/orders', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(order)
+    fetchLessons() {
+        fetch('https://backend-afterschool.onrender.com/api/lessons')
+            .then(response => response.json())
+            .then(data => {
+                this.lessons = data;
+            })
+            .catch(error => console.error('Error:', error));
+    },
+    searchLessons() {
+        if (this.searchQuery.trim() === '') {
+            this.fetchLessons(); // Reload all lessons if search query is cleared
+        } else {
+            fetch(`https://backend-afterschool.onrender.com/api/search?q=${this.searchQuery}`)
+                .then(response => response.json())
+                .then(data => {
+                    this.lessons = data;
+                })
+                .catch(error => console.error('Error searching lessons:', error));
+        }
+    },
+    addToCart(lesson) {
+        if (lesson.spaces > 0) {
+            lesson.spaces--;
+            this.cart.push({ ...lesson });
+        }
+    },
+    removeFromCart(item) {
+        const index = this.cart.indexOf(item);
+        if (index > -1) {
+            const lesson = this.lessons.find(l => l._id === item._id);
+            if (lesson) {
+                fetch(`https://backend-afterschool.onrender.com/api/lessons/${item._id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ spaces: lesson.spaces + 1 })
+                })
+                    .then(() => {
+                        lesson.spaces++;
+                        this.cart.splice(index, 1);
+                        this.fetchLessons();
                     })
-                        .then(() => {
-                            alert('Order submitted successfully!');
-                            this.cart = [];
-                            this.showCart = false;
-                            this.checkoutForm.name = '';
-                            this.checkoutForm.phone = '';
-                            this.fetchLessons();
-                        })
-                        .catch(error => {
-                            console.error('Error:', error);
-                            alert('Error submitting order. Please try again.');
-                        });
-                }
-            },
+                    .catch(error => console.error('Error updating spaces:', error));
+            }
+        }
+    },
+    toggleCart() {
+        if (this.cart.length > 0) {
+            this.showCart = !this.showCart;
+        }
+    },
+    submitOrder() {
+        if (!this.isCheckoutValid) return;
+
+        const order = {
+            name: this.checkoutForm.name,
+            phone: this.checkoutForm.phone,
+            lessons: this.cart.map(item => item._id)
+        };
+
+        fetch('https://backend-afterschool.onrender.com/api/orders', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(order)
+        })
+            .then(() => {
+                alert('Order submitted successfully!');
+                this.cart = [];
+                this.showCart = false;
+                this.checkoutForm.name = '';
+                this.checkoutForm.phone = '';
+                this.fetchLessons();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error submitting order. Please try again.');
+            });
+    }
+},
             mounted() {
                 this.fetchLessons();
             }
