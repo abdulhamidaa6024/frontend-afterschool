@@ -12,7 +12,7 @@
         <!-- Header -->
         <header>
             <h1>After School Classes</h1>
-            <button class="cart-button" :disabled="cart.length === 0" @click="showCart = !showCart">
+            <button class="cart-button" disabled="cart.length === 0" @click="showCart = !showCart">
                 Shopping Cart ({{ cart.length }})
             </button>
         </header>
@@ -194,7 +194,7 @@
             }
         });
     </script>
-    <style>
+    <!-- <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
@@ -340,7 +340,7 @@
             background-color: #cccccc;
             cursor: not-allowed;
         }
-    </style>
+    </style> -->
 </body>
 
 </html>
