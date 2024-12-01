@@ -12,7 +12,7 @@
         <!-- Header -->
         <header>
             <h1>After School Classes</h1>
-            <button class="cart-button" disabled="cart.length === 0" @click="showCart = !showCart">
+            <button class="cart-button" :disabled="cart.length === 0" @click="toggleCart">
                 Shopping Cart ({{ cart.length }})
             </button>
         </header>
@@ -115,6 +115,7 @@
                     );
                 }
             },
+
             methods: {
                 fetchLessons() {
                     fetch('https://backend-afterschool.onrender.com/api/lessons')
@@ -159,6 +160,11 @@
                                 })
                                 .catch(error => console.error('Error updating spaces:', error));
                         }
+                    }
+                },
+                toggleCart() {
+                    if (this.cart.length > 0) {
+                        this.showCart = !this.showCart;
                     }
                 },
                 submitOrder() {
